@@ -12,14 +12,14 @@ Python 3.6.8
 ```
 
 ### Modules
-
+```
 Tensorflow
 MNIST
 NumPy
 OpenCV
 Pillow
 Matplotlib
-
+```
 ### How to run
 
 Follow README of each question
