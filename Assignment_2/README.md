@@ -30,5 +30,5 @@ python <filename>
 #### Tensorboard
 
 ```
-tensorboard --logdir <path to directory graph>
+tensorboard --logdir <path to graph directory>
 ```
