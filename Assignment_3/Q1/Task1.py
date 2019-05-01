@@ -74,23 +74,57 @@ model.compile(optimizer='adam',loss={'output_cls':'binary_crossentropy',
 
 
 # In[ ]:
+import random
+def image_generator(x_train,class_train,bbox_train, batch_size = 64):
+    length=x_train.shape[0]
+    print(length)
+    # y_train=np.expand_dims(y_train, axis=3)
+    while True:
+        # Select files (paths/indices) for the batch
+        
+        batch_input = []
+        batch_class = [] 
+        batch_bbox = []
+
+        # Read in each input, perform preprocessing and get labels
+        for i in range(batch_size):
+            i= random.randint(0,length)
+            input_1 = x_train[i]
+            class_1 = class_train[i]
+            bbox_1 = bbox_train[i]
+            # input = preprocess_input(image=input)
+            batch_input += [ input_1 ]
+            batch_class += [ class_1 ]
+            batch_bbox += [ bbox_1 ]
+        # Return a tuple of (input,output) to feed the network
+        batch_x = np.array( batch_input )
+        batch_class = np.array( batch_class )
+        batch_bbox = np.array( batch_bbox)
+
+        yield( batch_x, [batch_class,batch_bbox] )
+
 
 
 tbCallBack = keras.callbacks.TensorBoard(log_dir='./Graph2', histogram_freq=0, write_graph=True, write_images=True)
-
 
 # # In[32]:
 
 x_train=np.load('images.npy')
 class_train=np.load('labels.npy')
 bbox_train=np.load('bbox.npy')
+print("shuffling xtrain")
+length=x_train.shape[0]
+print("length is : "+str(length))
+trainGen=image_generator(x_train,class_train,bbox_train, batch_size = 4)
 
-model.fit(x=x_train,
-         y=[class_train,bbox_train],
-         batch_size=300,
-         epochs=2,
-         validation_split=0.1,
-         verbose =1,
-         callbacks=[tbCallBack])
+H = model.fit_generator(trainGen,steps_per_epoch=int(length/4)    ,epochs=4)
+
+# model.fit(x=x_train,
+#          y=[class_train,bbox_train],
+#          batch_size=300,
+#          epochs=2,
+#          validation_split=0.1,
+#          verbose =1,
+#          callbacks=[tbCallBack])
 
 model.save('task1.h5')
