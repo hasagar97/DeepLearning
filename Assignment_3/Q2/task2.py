@@ -182,13 +182,14 @@ yy.shape
 
 # In[17]:
 
-x_train.shape
+
 y_train.shape
 
 
 # In[18]:
-trainGen=image_generator(x_train,y_train, batch_size = 16)
-H = model.fit_generator(trainGen,steps_per_epoch=int(9000/16)	,epochs=2)
+trainGen=image_generator(x_train,y_train, batch_size = 4)
+print("batch Size=16")
+H = model.fit_generator(trainGen,steps_per_epoch=int(9000/4)	,epochs=4)
 # model.fit(x=x_train,
          # y=yy,
          # batch_size=300,
@@ -245,7 +246,7 @@ print(score)
 
 #y_pred = model.predict(x_test)
 
-model.save('task2_big_2epochs.h5')
+model.save('task2_big_4epochs.h5')
 
 
 y_pred = model.predict(x_test)
